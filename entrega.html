@@ -170,7 +170,7 @@ pre.sum{white-space:pre-wrap;font-family:var(--f-body);font-size:13.5px;line-hei
       for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
       var d = JSON.parse(new TextDecoder().decode(bytes));
       if (!d || !d.c || !d.a || !d.a.length) return null;
-      return {cliente:d.c, proyecto:d.p||'', fecha:d.f||'', mail:d.m||MAIL_POR_DEFECTO, resena:d.r||'', id:d.i||'',
+      return {cliente:d.c, proyecto:d.p||'', fecha:d.f||'', mail:d.m||MAIL_POR_DEFECTO, resena:d.r||'', id:d.i||'', planilla:d.w||'',
               ambientes:d.a.map(function(x){ return {nombre:x[0], items:x[1]}; })};
     } catch(e){ return null; }
   }
@@ -303,21 +303,19 @@ pre.sum{white-space:pre-wrap;font-family:var(--f-body);font-size:13.5px;line-hei
     var t = totals(), obs = [];
     P.ambientes.forEach(function(a, ai){ a.items.forEach(function(it, ii){ var st = R.items[ai+'-'+ii]; if (st && st.e==='obs') obs.push(a.nombre+' · '+it+': '+st.t); }); });
     var datos = {
-      _subject: 'Acta de entrega · '+P.cliente+(P.proyecto?' · '+P.proyecto:'')+(t.obs?' · '+t.obs+' para revisar':' · todo conforme'),
-      _template: 'table', _captcha: 'false',
-      'Cliente': P.cliente, 'Proyecto': P.proyecto || '-', 'Fecha de entrega': fmt(P.fecha) || '-',
-      'Conformidad firmada por': R.nombre.trim(), 'Fecha de conformidad': hoy(),
-      'Puntos revisados': t.done+' de '+t.tot, 'Puntos para revisar': t.obs ? obs.join(' | ') : 'Ninguno',
-      'Promedio experiencia (1 a 5)': promedio().toFixed(1).replace('.',','), 'Recomendación (0 a 10)': String(R.nps),
-      'Comentario': R.coment.trim() || '-', 'Autoriza compartir fotos': R.fotos ? 'Sí' : 'No',
-      'Acta completa': resumen()
+      asunto: 'Acta de entrega · '+P.cliente+(P.proyecto?' · '+P.proyecto:'')+(t.obs?' · '+t.obs+' para revisar':' · todo conforme'),
+      mail: P.mail, cliente: P.cliente, proyecto: P.proyecto || '', fechaEntrega: fmt(P.fecha) || '',
+      firma: R.nombre.trim(), revisados: t.done+' de '+t.tot, cantRevisar: t.obs, detalleRevisar: obs.join('\n'),
+      diseno: R.rat.diseno, terminaciones: R.rat.terminaciones, plazos: R.rat.plazos, comunicacion: R.rat.comunicacion, obra: R.rat.obra,
+      promedio: Math.round(promedio()*10)/10, nps: R.nps, comentario: R.coment.trim(), fotos: R.fotos ? 'Sí' : 'No',
+      acta: resumen()
     };
-    ASPECTOS.forEach(function(a){ datos[a[1]] = String(R.rat[a[0]]); });
-    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(P.mail), {
-      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(datos)
-    }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok, j:j}; }); })
+    if (!P.planilla){ estado = 'fallo'; render(); window.scrollTo(0,0); return; }
+    // Google Apps Script: texto plano para evitar el preflight de CORS
+    fetch(P.planilla, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(datos) })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok, j:j}; }); })
       .then(function(res){
-        var ok = res.ok && String(res.j.success) === 'true';
+        var ok = res.ok && res.j.ok === true;
         estado = ok ? 'ok' : 'fallo'; if (ok){ R.enviado = true; save(); } render(); window.scrollTo(0,0);
       }, function(){ estado = 'fallo'; render(); window.scrollTo(0,0); });
   }
