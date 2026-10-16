@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Acta de entrega · Finca Estudio</title>
+<link rel="icon" href="assets/images/logo-fe.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,400;1,9..144,340&family=Karla:wght@400;500;600&display=swap">
+<style>
+/* Acta de entrega: una pantalla por paso, columna única de 600px, todo en modo claro y con tintes suaves. */
+:root{
+  --bg:#FAF9F6; --card:#FFFFFF; --ink:#1F2024; --mid:#6E7079; --soft:#A9ABB1; --line:#ECE9E3; --line-2:#E2DED6;
+  --navy:#0E3A66; --navy-soft:#F1F5F9; --navy-line:#C8D6E5;
+  --ok:#3A7656; --ok-soft:#F0F7F2; --ok-line:#BCD9C6;
+  --err:#A4472C; --err-soft:#FBF1EC;
+  --f-disp:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"Karla", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --r:16px; --pad:20px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:600px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;font-family:var(--f-disp);font-weight:340;letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
+em{font-style:italic;color:var(--navy)}
+p{margin:0}
+[hidden]{display:none!important}
+
+/* cabecera */
+.head{position:sticky;top:0;z-index:5;background:rgba(250,249,246,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding-top:env(safe-area-inset-top,0px)}
+.head .wrap{display:grid;gap:14px;padding-block:16px 14px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:32px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-disp);font-size:17px;color:var(--ink);text-decoration:none}
+.brand img{width:30px;height:30px;object-fit:contain}
+.stepinfo{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.track{display:flex;gap:4px}
+.track span{flex:1;height:3px;border-radius:3px;background:var(--line-2);transition:background-color .3s ease}
+.track span.on{background:var(--navy)}
+.track span.now{background:var(--navy-line)}
+
+/* contenido */
+main.wrap{padding-block:12px 140px}
+.screen{display:grid;gap:16px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);font-weight:600}
+.title{font-size:clamp(30px,7.6vw,40px);line-height:1.1}
+.lead{color:var(--mid);max-width:52ch}
+.intro{display:grid;gap:10px;padding-bottom:4px}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes inR{from{opacity:.001;transform:translateX(14px)}to{opacity:1;transform:none}}
+  @keyframes inL{from{opacity:.001;transform:translateX(-14px)}to{opacity:1;transform:none}}
+  .screen.fwd{animation:inR .3s cubic-bezier(.2,.8,.2,1) both}
+  .screen.back{animation:inL .3s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+  .mark.pop{animation:pop .26s ease both}
+}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:var(--pad);display:grid;gap:14px;min-width:0}
+
+/* bienvenida */
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.fact{display:grid;gap:2px;padding-inline:12px;border-left:1px solid var(--line)}
+.fact:first-child{padding-left:0;border-left:0}
+.fact span{font-size:11px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.fact b{font-weight:500;font-size:17px;font-variant-numeric:tabular-nums}
+.how{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.how li{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;padding-block:14px;border-top:1px solid var(--line)}
+.how li:first-child{border-top:0;padding-top:0}
+.how li:last-child{padding-bottom:0}
+.how li::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--navy-soft);color:var(--navy);display:grid;place-items:center;font-weight:600;font-size:14px}
+.how b{display:block;font-weight:600}
+.how small{color:var(--mid);font-size:14px}
+
+/* puntos del ambiente */
+.items{display:grid;gap:10px}
+.it{display:grid;grid-template-columns:28px 1fr;gap:12px 14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px var(--pad);transition:border-color .2s ease,background-color .2s ease}
+.it.ok{border-color:var(--ok-line);background:var(--ok-soft)}
+.it.obs{border-color:var(--navy-line);background:var(--navy-soft)}
+.mark{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;background:var(--card)}
+.mark svg{width:14px;height:14px;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.it.ok .mark{border-color:var(--ok);color:var(--ok)}
+.it.obs .mark{border-color:var(--navy);color:var(--navy)}
+.it .txt{padding-top:3px;min-width:0}
+.it .choice,.it textarea{grid-column:2}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice button{font:inherit;font-size:15px;font-weight:500;min-height:44px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);color:var(--ink);cursor:pointer;transition:all .15s ease}
+.choice button:hover{border-color:var(--soft)}
+.choice button[aria-pressed="true"].c-ok{background:var(--card);border-color:var(--ok);color:var(--ok);font-weight:600}
+.choice button[aria-pressed="true"].c-obs{background:var(--card);border-color:var(--navy);color:var(--navy);font-weight:600}
+.link{justify-self:start;font:inherit;font-size:14px;font-weight:500;color:var(--navy);background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:var(--navy-line);text-underline-offset:4px}
+
+textarea,input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line-2);border-radius:12px;padding:12px 14px;width:100%}
+textarea{min-height:76px;resize:vertical}
+textarea::placeholder,input::placeholder{color:var(--soft)}
+label.f{display:grid;gap:8px;font-weight:500}
+label.f small{font-weight:400;color:var(--mid);font-size:14px}
+
+/* experiencia */
+.q h3{font-size:20px;line-height:1.25}
+.scale5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.scale5 button,.scale11 button{font:inherit;cursor:pointer;border:1px solid var(--line-2);background:var(--card);color:var(--ink);transition:all .15s ease}
+.scale5 button{min-height:54px;border-radius:12px;display:grid;place-items:center;align-content:center;gap:1px;font-size:16px;font-variant-numeric:tabular-nums}
+.scale5 button small{font-size:10.5px;color:var(--mid);line-height:1.1}
+.scale5 button:hover,.scale11 button:hover{border-color:var(--soft)}
+.scale5 button[aria-pressed="true"],.scale11 button[aria-pressed="true"]{background:var(--navy-soft);border-color:var(--navy);color:var(--navy);font-weight:600}
+.scale5 button[aria-pressed="true"] small{color:var(--navy)}
+.scale11{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px}
+.scale11 button{min-height:44px;border-radius:10px;font-size:14px;font-variant-numeric:tabular-nums;padding:0}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--mid)}
+.check{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;cursor:pointer}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--navy)}
+
+/* conformidad */
+.recap{display:grid;gap:0}
+.recap .r{display:flex;justify-content:space-between;gap:12px;padding-block:10px;border-top:1px solid var(--line)}
+.recap .r:first-child{border-top:0;padding-top:0}
+.recap .r:last-child{padding-bottom:0}
+.recap .r span:first-child{color:var(--mid)}
+.recap .r span:last-child{font-weight:600;font-variant-numeric:tabular-nums}
+
+/* barra inferior */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(250,249,246,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:12px}
+.nav .msg{flex:1 1 100%;font-size:14px;color:var(--err);background:var(--err-soft);border-radius:10px;padding:8px 12px}
+.btn{font:inherit;font-weight:600;font-size:15px;border-radius:999px;padding:13px 24px;border:1px solid var(--navy);background:var(--navy);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:50px;text-decoration:none;transition:opacity .15s ease}
+.btn:hover{opacity:.9}
+.btn.grow{flex:1}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--line-2)}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn:focus-visible,.choice button:focus-visible,.scale5 button:focus-visible,.scale11 button:focus-visible,.link:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--navy-line);outline-offset:2px}
+.note{font-size:14px;color:var(--mid)}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* final */
+.seal{width:64px;height:64px;border-radius:50%;background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok);display:grid;place-items:center}
+.seal svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.seal.warn{background:var(--err-soft);border-color:#EBCBBE;color:var(--err)}
+pre.sum{white-space:pre-wrap;font-family:var(--f-body);font-size:13.5px;line-height:1.55;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:10px 0 0;max-height:320px;overflow:auto}
+.promo{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:var(--r);padding:var(--pad);display:grid;gap:8px}
+.promo h3{font-size:21px}
+.foot{font-size:13px;color:var(--soft);text-align:center;padding-top:28px}
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;margin-right:10px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:420px){:root{--pad:16px}.scale5 button small{font-size:9.5px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+  var MAIL_POR_DEFECTO = 'info@fincaestudio.io';
+  var app = document.getElementById('app');
+  var $ = function(s){ return document.querySelector(s); };
+  var ASPECTOS = [['diseno','El diseño y la propuesta'],['terminaciones','La calidad de las terminaciones'],['plazos','El cumplimiento de los plazos'],['comunicacion','La comunicación con el estudio'],['obra','El orden y la limpieza en la obra']];
+  var ETIQ = ['Malo','Regular','Bueno','Muy bueno','Excelente'];
+  var ICON_OK = '<svg viewBox="0 0 24 24" stroke="currentColor"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+  var ICON_OBS = '<svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6v7M12 17.5v.5"/></svg>';
+
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function fmt(iso){ if(!iso) return ''; var p = String(iso).split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : iso; }
+  function hoy(){ var d = new Date(); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
+  function firstName(n){ return String(n||'').trim().split(/\s+/)[0] || ''; }
+
+  // ---------- datos del proyecto (vienen en el link) ----------
+  function decode(h){
+    try {
+      var b = h.replace(/-/g,'+').replace(/_/g,'/'); while (b.length % 4) b += '=';
+      var bin = atob(b), bytes = new Uint8Array(bin.length);
+      for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+      var d = JSON.parse(new TextDecoder().decode(bytes));
+      if (!d || !d.c || !d.a || !d.a.length) return null;
+      return {cliente:d.c, proyecto:d.p||'', fecha:d.f||'', mail:d.m||MAIL_POR_DEFECTO, resena:d.r||'', id:d.i||'',
+              ambientes:d.a.map(function(x){ return {nombre:x[0], items:x[1]}; })};
+    } catch(e){ return null; }
+  }
+  var H = (location.hash||'').slice(1);
+  var P = H ? decode(H) : null;
+
+  // ---------- borrador del cliente (en su navegador) ----------
+  var KEY = 'finca-acta-' + (P && P.id ? P.id : H.slice(0,48));
+  function emptyR(){ return {items:{}, rat:{}, nps:null, coment:'', fotos:false, nombre:'', conf:false, paso:0, enviado:false}; }
+  function load(){ try { var raw = localStorage.getItem(KEY); if (raw) return Object.assign(emptyR(), JSON.parse(raw)); } catch(e){} return emptyR(); }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(R)); } catch(e){} }
+  var R = load(), dir = 'fwd', err = '', lastMark = null, estado = R.enviado ? 'ok' : '';
+
+  function totals(){
+    var tot=0, ok=0, obs=0;
+    P.ambientes.forEach(function(a,ai){ a.items.forEach(function(_,ii){ tot++; var st = R.items[ai+'-'+ii]; if (st && st.e==='ok') ok++; if (st && st.e==='obs') obs++; }); });
+    return {tot:tot, ok:ok, obs:obs, done:ok+obs};
+  }
+  function promedio(){ return ASPECTOS.reduce(function(s,a){ return s+(R.rat[a[0]]||0); },0)/ASPECTOS.length; }
+  function nPasos(){ return P.ambientes.length + 3; }
+
+  // ---------- pantallas ----------
+  function cabecera(conTrack){
+    var k = R.paso, n = nPasos(), na = P ? P.ambientes.length : 0, track = '';
+    if (conTrack) for (var i=0;i<n;i++) track += '<span class="'+(i<k?'on':i===k?'now':'')+'"></span>';
+    var info = !conTrack ? '' : k===0 ? 'Inicio' : k<=na ? 'Ambiente '+k+' de '+na : k===na+1 ? 'Tu experiencia' : 'Conformidad';
+    return '<header class="head"><div class="wrap"><div class="brandrow"><a class="brand" href="index.html"><img src="assets/images/logo-fe.png" alt="">Finca Estudio</a><span class="stepinfo">'+info+'</span></div>'+
+      (conTrack ? '<div class="track" aria-hidden="true">'+track+'</div>' : '')+'</div></header>';
+  }
+
+  function pantalla(){
+    var k = R.paso, na = P.ambientes.length;
+    if (k===0){
+      var t = totals();
+      return '<div class="intro"><p class="eyebrow">Acta de entrega</p><h1 class="title">¡Hola, '+esc(firstName(P.cliente))+'! Tu proyecto'+(P.proyecto?' en <em>'+esc(P.proyecto)+'</em>':'')+' está listo.</h1>'+
+        '<p class="lead">Antes de cerrar la obra, recorramos juntos cada ambiente. Te lleva unos cinco minutos.</p></div>'+
+        '<div class="card"><div class="facts"><div class="fact"><span>Entrega</span><b>'+esc(fmt(P.fecha)||'—')+'</b></div><div class="fact"><span>Ambientes</span><b>'+na+'</b></div><div class="fact"><span>Puntos</span><b>'+t.tot+'</b></div></div></div>'+
+        '<div class="card"><ol class="how"><li><div><b>Revisá cada ambiente</b><small>Tocá “Todo bien” o “Revisar” en cada punto.</small></div></li>'+
+        '<li><div><b>Contanos tu experiencia</b><small>Cinco preguntas rápidas.</small></div></li>'+
+        '<li><div><b>Confirmá la entrega</b><small>Con tu nombre, y el acta nos llega por mail.</small></div></li></ol></div>';
+    }
+    if (k<=na){
+      var ai = k-1, a = P.ambientes[ai], pend = 0;
+      var h = '<div class="intro"><p class="eyebrow">Ambiente '+k+' de '+na+'</p><h2 class="title">'+esc(a.nombre)+'</h2>'+
+        '<p class="lead">¿Quedó todo como esperabas? Si algo no te convence, marcalo para revisar y contanos qué viste.</p></div><div class="items">';
+      a.items.forEach(function(it, ii){
+        var kk = ai+'-'+ii, st = R.items[kk] || {}; if (!st.e) pend++;
+        h += '<div class="it'+(st.e?' '+st.e:'')+'"><span class="mark'+(lastMark===kk?' pop':'')+'" aria-hidden="true">'+(st.e==='ok'?ICON_OK:st.e==='obs'?ICON_OBS:'')+'</span><p class="txt">'+esc(it)+'</p>'+
+          '<div class="choice" role="group" aria-label="'+esc(it)+'"><button type="button" class="c-ok" data-it="'+kk+'" data-e="ok" aria-pressed="'+(st.e==='ok')+'">Todo bien</button>'+
+          '<button type="button" class="c-obs" data-it="'+kk+'" data-e="obs" aria-pressed="'+(st.e==='obs')+'">Revisar</button></div>'+
+          (st.e==='obs' ? '<textarea id="obs-'+kk+'" data-obs="'+kk+'" aria-label="Qué notaste" placeholder="¿Qué notaste? Ej: la puerta de arriba roza al cerrar">'+esc(st.t||'')+'</textarea>' : '')+
+          '</div>';
+      });
+      h += '</div>';
+      if (pend && pend < a.items.length) h += '<button type="button" class="link" data-act="todo-ok" data-i="'+ai+'">Marcar los pendientes como “Todo bien”</button>';
+      else if (pend) h += '<button type="button" class="link" data-act="todo-ok" data-i="'+ai+'">Está todo bien en este ambiente</button>';
+      return h;
+    }
+    if (k===na+1){
+      var h = '<div class="intro"><p class="eyebrow">Tu experiencia</p><h2 class="title">¿Cómo fue trabajar <em>con nosotros?</em></h2></div>';
+      ASPECTOS.forEach(function(a){
+        var v0 = R.rat[a[0]] || 0;
+        h += '<div class="card q"><h3>'+a[1]+'</h3><div class="scale5" role="group" aria-label="'+a[1]+'">';
+        for (var v=1; v<=5; v++) h += '<button type="button" data-rat="'+a[0]+'" data-v="'+v+'" aria-pressed="'+(v0===v)+'" aria-label="'+v+', '+ETIQ[v-1]+'">'+v+'<small>'+ETIQ[v-1]+'</small></button>';
+        h += '</div></div>';
+      });
+      h += '<div class="card q"><h3>¿Recomendarías Finca Estudio a un amigo o familiar?</h3><div class="scale11" role="group" aria-label="Del 0 al 10">';
+      for (var v=0; v<=10; v++) h += '<button type="button" data-nps="'+v+'" aria-pressed="'+(R.nps===v)+'">'+v+'</button>';
+      h += '</div><div class="ends"><span>Para nada</span><span>Seguro que sí</span></div></div>'+
+        '<div class="card"><label class="f" for="in-coment">¿Algo más que quieras contarnos?<small>Opcional. Lo que más te gustó o lo que mejorarías.</small><textarea id="in-coment" data-f="coment">'+esc(R.coment)+'</textarea></label>'+
+        '<label class="check"><input type="checkbox" id="in-fotos" data-f="fotos"'+(R.fotos?' checked':'')+'><span>Pueden compartir fotos del proyecto y mi comentario, sin mis datos personales.</span></label></div>';
+      return h;
+    }
+    var t = totals();
+    return '<div class="intro"><p class="eyebrow">Último paso</p><h2 class="title">Confirmá la <em>entrega</em></h2></div>'+
+      '<div class="card recap"><div class="r"><span>Puntos revisados</span><span>'+t.done+' de '+t.tot+'</span></div>'+
+      '<div class="r"><span>Para revisar</span><span>'+t.obs+'</span></div>'+
+      '<div class="r"><span>Tu puntuación promedio</span><span>'+promedio().toFixed(1).replace('.',',')+' / 5</span></div></div>'+
+      '<div class="card"><label class="f" for="in-nombre">Tu nombre y apellido<input type="text" id="in-nombre" data-f="nombre" value="'+esc(R.nombre)+'" autocomplete="name"></label>'+
+      '<label class="check"><input type="checkbox" id="in-conf" data-f="conf"'+(R.conf?' checked':'')+'><span>Recibo el proyecto y doy conformidad a la entrega'+(t.obs?', con los puntos que marqué para revisar':'')+'.</span></label></div>';
+  }
+
+  function validar(){
+    var k = R.paso, na = P.ambientes.length;
+    if (k>=1 && k<=na){
+      var ai=k-1, a=P.ambientes[ai], falt=0, sinTxt=false;
+      a.items.forEach(function(_,ii){ var st=R.items[ai+'-'+ii]; if(!st) falt++; else if(st.e==='obs' && !String(st.t||'').trim()) sinTxt=true; });
+      if (falt) return 'Te '+(falt===1?'falta 1 punto':'faltan '+falt+' puntos')+' de este ambiente.';
+      if (sinTxt) return 'Contanos qué notaste en los puntos para revisar.';
+    }
+    if (k===na+1){
+      var f = ASPECTOS.filter(function(a){ return !R.rat[a[0]]; }).length;
+      if (f) return 'Te '+(f===1?'falta 1 pregunta':'faltan '+f+' preguntas')+'.';
+      if (R.nps===null) return 'Contanos si recomendarías el estudio.';
+    }
+    if (k===na+2){
+      if (!R.nombre.trim()) return 'Escribí tu nombre y apellido.';
+      if (!R.conf) return 'Marcá la casilla para confirmar la entrega.';
+    }
+    return '';
+  }
+
+  function resumen(){
+    var t = totals(), L = [];
+    L.push('ACTA DE ENTREGA · FINCA ESTUDIO');
+    L.push('Cliente: '+P.cliente+(P.proyecto?' · Proyecto: '+P.proyecto:''));
+    L.push('Fecha de conformidad: '+hoy());
+    L.push('');
+    L.push('REVISIÓN: '+t.ok+' conformes · '+t.obs+' para revisar');
+    P.ambientes.forEach(function(a, ai){
+      var obs = [];
+      a.items.forEach(function(it, ii){ var st = R.items[ai+'-'+ii]; if (st && st.e==='obs') obs.push('   - '+it+(st.t ? ': '+st.t : '')); });
+      L.push('• '+a.nombre+': '+(obs.length ? obs.length+' para revisar' : 'todo bien'));
+      obs.forEach(function(o){ L.push(o); });
+    });
+    L.push('');
+    L.push('EXPERIENCIA (1 a 5)');
+    ASPECTOS.forEach(function(a){ L.push('• '+a[1]+': '+R.rat[a[0]]); });
+    L.push('Promedio: '+promedio().toFixed(1).replace('.',','));
+    L.push('Recomendación (0 a 10): '+R.nps);
+    if (R.coment.trim()) L.push('Comentario: '+R.coment.trim());
+    L.push('Autoriza compartir fotos y comentario: '+(R.fotos?'Sí':'No'));
+    L.push('');
+    L.push('Conformidad: '+R.nombre.trim()+' recibe el proyecto y da conformidad a la entrega'+(t.obs?', con los puntos marcados para revisar':'')+'.');
+    return L.join('\n');
+  }
+
+  function enviar(){
+    estado = 'enviando'; render();
+    var t = totals(), obs = [];
+    P.ambientes.forEach(function(a, ai){ a.items.forEach(function(it, ii){ var st = R.items[ai+'-'+ii]; if (st && st.e==='obs') obs.push(a.nombre+' · '+it+': '+st.t); }); });
+    var datos = {
+      _subject: 'Acta de entrega · '+P.cliente+(P.proyecto?' · '+P.proyecto:'')+(t.obs?' · '+t.obs+' para revisar':' · todo conforme'),
+      _template: 'table', _captcha: 'false',
+      'Cliente': P.cliente, 'Proyecto': P.proyecto || '-', 'Fecha de entrega': fmt(P.fecha) || '-',
+      'Conformidad firmada por': R.nombre.trim(), 'Fecha de conformidad': hoy(),
+      'Puntos revisados': t.done+' de '+t.tot, 'Puntos para revisar': t.obs ? obs.join(' | ') : 'Ninguno',
+      'Promedio experiencia (1 a 5)': promedio().toFixed(1).replace('.',','), 'Recomendación (0 a 10)': String(R.nps),
+      'Comentario': R.coment.trim() || '-', 'Autoriza compartir fotos': R.fotos ? 'Sí' : 'No',
+      'Acta completa': resumen()
+    };
+    ASPECTOS.forEach(function(a){ datos[a[1]] = String(R.rat[a[0]]); });
+    fetch('https://formsubmit.co/ajax/'+encodeURIComponent(P.mail), {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(datos)
+    }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok, j:j}; }); })
+      .then(function(res){
+        var ok = res.ok && String(res.j.success) === 'true';
+        estado = ok ? 'ok' : 'fallo'; if (ok){ R.enviado = true; save(); } render(); window.scrollTo(0,0);
+      }, function(){ estado = 'fallo'; render(); window.scrollTo(0,0); });
+  }
+
+  function renderFinal(){
+    var t = totals(), ok = estado === 'ok';
+    var h = cabecera(false)+'<main class="wrap"><div class="screen fwd">';
+    if (ok){
+      h += '<div class="seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></div>'+
+        '<div class="intro"><h1 class="title">¡Gracias, <em>'+esc(firstName(R.nombre)||firstName(P.cliente))+'</em>!</h1>'+
+        '<p class="lead">Recibimos tu acta de entrega. '+(t.obs ? 'Anotamos '+t.obs+' punto'+(t.obs>1?'s':'')+' para revisar y te vamos a contactar para coordinarlo.' : 'Nos alegra muchísimo que todo haya quedado como esperabas.')+'</p></div>';
+      if (R.nps >= 9){
+        h += '<div class="promo"><h3>¿Nos ayudás a llegar a más gente?</h3><p class="note">Si te gustó el resultado, una reseña o una mención en Instagram (@lalylezcano) nos ayuda un montón.</p>'+
+          (P.resena ? '<div class="actions" style="margin-top:6px"><a class="btn" href="'+esc(P.resena)+'" target="_blank" rel="noopener">Dejar una reseña</a></div>' : '')+'</div>';
+      }
+    } else {
+      h += '<div class="seal warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6v7M12 17.5v.5"/></svg></div>'+
+        '<div class="intro"><h1 class="title">No pudimos enviar el acta</h1>'+
+        '<p class="lead">Revisá tu conexión e intentá de nuevo. Si sigue sin salir, copiá el acta y mandala a '+esc(P.mail)+'.</p></div>'+
+        '<div class="actions"><button class="btn grow" type="button" data-act="reintentar">Intentar de nuevo</button><button class="btn ghost" type="button" data-act="copiar">Copiar el acta</button></div>'+
+        '<p class="note" id="copy-st" aria-live="polite"></p>';
+    }
+    h += '<details'+(ok?'':' open')+'><summary class="note" style="cursor:pointer">Ver el acta completa</summary><pre class="sum">'+esc(resumen())+'</pre></details>'+
+      (ok ? '' : '<button class="link" type="button" data-act="volver">Volver y corregir algo</button>')+
+      '<p class="foot">Finca Estudio · Mucho más que interiorismo</p></div></main>';
+    return h;
+  }
+
+  function render(){
+    if (!P){
+      app.innerHTML = cabecera(false)+'<main class="wrap"><div class="screen"><div class="intro"><p class="eyebrow">Acta de entrega</p><h1 class="title">Este link no está <em>completo</em></h1>'+
+        '<p class="lead">Abrí el link tal cual te lo mandó el estudio. Si el problema sigue, escribinos a '+MAIL_POR_DEFECTO+'.</p></div></div></main>';
+      return;
+    }
+    if (estado === 'ok' || estado === 'fallo'){ app.innerHTML = renderFinal(); return; }
+    if (R.paso >= nPasos()) R.paso = 0;
+    var k = R.paso, last = k === nPasos()-1, enviando = estado === 'enviando';
+    app.innerHTML = cabecera(true)+'<main class="wrap"><div class="screen '+dir+'">'+pantalla()+'</div></main>'+
+      '<nav class="nav" aria-label="Navegación"><div class="wrap">'+(err?'<p class="msg" role="alert">'+esc(err)+'</p>':'')+
+      (k>0 ? '<button class="btn ghost" type="button" data-act="atras"'+(enviando?' disabled':'')+'>Atrás</button>' : '')+
+      '<button class="btn grow" type="button" data-act="'+(last?'enviar':'sig')+'"'+(enviando?' disabled':'')+'>'+
+      (enviando ? '<span class="spinner" aria-hidden="true"></span>Enviando…' : k===0 ? 'Empezar' : last ? 'Confirmar y enviar' : 'Siguiente')+'</button></div></nav>';
+    lastMark = null;
+  }
+  function ir(k, d){ R.paso = k; dir = d; err = ''; save(); render(); window.scrollTo(0,0); dir = ''; }
+
+  app.addEventListener('click', function(ev){
+    var b = ev.target.closest('button'); if (!b) return;
+    if (b.dataset.it){
+      var k = b.dataset.it, cur = R.items[k] || {};
+      R.items[k] = {e:b.dataset.e, t:cur.t||''}; lastMark = k; dir=''; err=''; save(); render();
+      if (b.dataset.e === 'obs'){ var ta = $('#obs-'+k); if (ta && !ta.value) ta.focus(); }
+      return;
+    }
+    if (b.dataset.rat){ R.rat[b.dataset.rat] = +b.dataset.v; dir=''; err=''; save(); render(); return; }
+    if (b.dataset.nps !== undefined){ R.nps = +b.dataset.nps; dir=''; err=''; save(); render(); return; }
+    var act = b.dataset.act;
+    if (act === 'todo-ok'){ var i = +b.dataset.i; P.ambientes[i].items.forEach(function(_,ii){ var kk=i+'-'+ii; if(!R.items[kk]) R.items[kk]={e:'ok',t:''}; }); dir=''; err=''; save(); render(); return; }
+    if (act === 'sig'){ err = validar(); if (err){ dir=''; render(); return; } ir(R.paso+1,'fwd'); return; }
+    if (act === 'atras'){ ir(Math.max(0,R.paso-1),'back'); return; }
+    if (act === 'enviar' || act === 'reintentar'){ if (act==='enviar'){ err = validar(); if (err){ dir=''; render(); return; } } enviar(); return; }
+    if (act === 'volver'){ estado = ''; dir='back'; render(); return; }
+    if (act === 'copiar'){
+      var st = $('#copy-st'), msg = function(m){ if (st) st.textContent = m; };
+      try { navigator.clipboard.writeText(resumen()).then(function(){ msg('Copiado. Pegalo en un mail a '+P.mail+'.'); }, function(){ msg('Seleccioná el texto del acta y copialo.'); }); } catch(e){ msg('Seleccioná el texto del acta y copialo.'); }
+    }
+  });
+  app.addEventListener('input', function(ev){
+    var el = ev.target;
+    if (el.dataset.obs){ R.items[el.dataset.obs] = {e:'obs', t:el.value}; save(); return; }
+    if (el.dataset.f === 'coment' || el.dataset.f === 'nombre'){ R[el.dataset.f] = el.value; save(); return; }
+    if (el.dataset.f === 'fotos' || el.dataset.f === 'conf'){ R[el.dataset.f] = el.checked; save(); return; }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
