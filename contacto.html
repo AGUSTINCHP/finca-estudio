@@ -160,15 +160,32 @@
 
 <script src="assets/js/script.js"></script>
 <script>
-  // NOTA PARA EL DESARROLLADOR: este formulario todavía no envía datos a ningún
-  // lado — falta conectarlo a un servicio de envío de mail (Formspree, EmailJS,
-  // un backend propio, etc.). Por ahora solo muestra un mensaje de confirmación.
+  // El formulario arma la consulta y la abre en el WhatsApp de Laly, ya escrita.
+  // GitHub Pages no puede enviar mails, así que WhatsApp es el canal de envío.
+  var WHATSAPP = '5491131908676';
   var form = document.getElementById('contactForm');
   var note = document.getElementById('formNote');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      note.textContent = 'Gracias — este formulario todavía no está conectado a un envío real. Mientras tanto, escribinos por WhatsApp o a info@fincaestudio.io.';
+      var v = function (id) { return (document.getElementById(id).value || '').trim(); };
+      var lineas = [
+        'Hola! Les escribo desde la web de Finca Estudio.',
+        '',
+        'Nombre: ' + v('nombre') + ' ' + v('apellido'),
+        'Email: ' + v('email')
+      ];
+      if (v('telefono')) lineas.push('Teléfono: ' + v('telefono'));
+      lineas.push('País del proyecto: ' + v('pais'));
+      lineas.push('Tipo de proyecto: ' + v('tipo'));
+      if (v('mensaje')) lineas.push('', v('mensaje'));
+      var url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lineas.join('\n'));
+
+      if (window.fincaTrackLead) window.fincaTrackLead({ content_category: v('tipo') });
+
+      var w = window.open(url, '_blank');
+      if (!w) location.href = url;
+      note.innerHTML = '¡Listo! Se abrió WhatsApp con tu consulta: solo tocá enviar. Si no se abrió, <a href="' + url + '" target="_blank" rel="noopener">hacé clic acá</a>.';
     });
   }
 </script>
